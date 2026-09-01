@@ -1,0 +1,6 @@
+{
+  "name": "BrainBoost",
+  "description": "A gamified cognitive training and aptitude learning web application with interactive games, level progression, and progress tracking.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

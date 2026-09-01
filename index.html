@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BrainBoost — Train Your Brain. Level Up Your Mind.</title>
+  <meta name="description" content="A gamified cognitive training and aptitude learning web application with interactive games, level progression, and progress tracking." />
+  <meta property="og:title" content="BrainBoost — Train Your Brain. Level Up Your Mind." />
+  <meta property="og:description" content="Gamified cognitive training and aptitude learning web application designed for students." />
+  <meta property="og:type" content="website" />
+  
+  <!-- Google Fonts: Plus Jakarta Sans & Orbitron -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="./style.css" />
+</head>
+<body>
+  <!-- Ambient Cosmic Grid Overlay -->
+  <div class="cosmic-grid" aria-hidden="true"></div>
+
+  <!-- Confetti Canvas for Victory Effects -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div id="app-root">
+    <!-- Main Header -->
+    <header class="app-header">
+      <div class="logo-wrap" onclick="showHome()" id="app-logo-btn">
+        <div class="logo-icon">🧠</div>
+        <div>
+          <div class="logo-title gaming-font text-gradient">BRAINBOOST</div>
+        </div>
+        <span class="logo-badge">PRO</span>
+      </div>
+
+      <!-- Navigation Tabs -->
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <button class="nav-link active" data-view="view-home" onclick="showHome()" id="nav-btn-home">
+          <span>🏠</span> <span>Home</span>
+        </button>
+        <button class="nav-link" data-view="view-cognitive" onclick="showCognitiveGames()" id="nav-btn-cognitive">
+          <span>🧠</span> <span>Cognitive</span>
+        </button>
+        <button class="nav-link" data-view="view-aptitude" onclick="showAptitudeGames()" id="nav-btn-aptitude">
+          <span>📚</span> <span>Aptitude</span>
+        </button>
+        <button class="nav-link" data-view="view-progress" onclick="showProgress()" id="nav-btn-progress">
+          <span>📊</span> <span>Progress</span>
+        </button>
+      </nav>
+
+      <!-- Header Player Mini-Stats -->
+      <div class="header-stats">
+        <div class="stat-chip" title="Total Score Earned">
+          <span class="stat-chip-icon">🏆</span>
+          <span class="stat-chip-score" id="header-total-score">0</span>
+        </div>
+        <div class="stat-chip" title="Total Stars Collected">
+          <span class="stat-chip-icon">⭐</span>
+          <span class="stat-chip-stars" id="header-total-stars">0</span>
+        </div>
+        <button class="sound-toggle-btn" id="sound-toggle-btn" onclick="toggleSound()" aria-label="Toggle Sound" title="Toggle Sound">
+          🔊
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN VIEWS WRAPPER -->
+    <main>
+      <!-- ==========================================
+           1. VIEW: HOME PAGE
+           ========================================== -->
+      <section id="view-home" class="view-container active">
+        <div class="hero-section">
+          <div class="hero-pill">
+            <span>⚡</span> Futuristic Mind Training Platform
+          </div>
+          <h1 class="hero-title text-gradient">BRAINBOOST</h1>
+          <p class="hero-tagline">
+            "Train Your Brain. Level Up Your Mind."
+          </p>
+
+          <!-- Live Player Statistics Matrix -->
+          <div class="home-stats-grid">
+            <div class="home-stat-card" id="home-stat-score">
+              <div class="stat-card-icon">🏆</div>
+              <div class="stat-card-value text-cyan" id="home-score-val">0</div>
+              <div class="stat-card-label">Total Score</div>
+            </div>
+
+            <div class="home-stat-card" id="home-stat-stars">
+              <div class="stat-card-icon">⭐</div>
+              <div class="stat-card-value text-gold" id="home-stars-val">0</div>
+              <div class="stat-card-label">Total Stars</div>
+            </div>
+
+            <div class="home-stat-card" id="home-stat-levels">
+              <div class="stat-card-icon">🔓</div>
+              <div class="stat-card-value text-purple" id="home-levels-val">0 / 160</div>
+              <div class="stat-card-label">Completed Levels</div>
+            </div>
+
+            <div class="home-stat-card" id="home-stat-progress">
+              <div class="stat-card-icon">📈</div>
+              <div class="stat-card-value text-emerald" id="home-progress-val">0%</div>
+              <div class="stat-card-label">Overall Progress</div>
+              <div class="stat-progress-bar">
+                <div class="stat-progress-fill" id="home-progress-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Hero Action Buttons -->
+          <div class="home-cta-group">
+            <button class="btn btn-primary btn-lg" onclick="startBrainBoost()" id="btn-start-brainboost">
+              🚀 Start BrainBoost
+            </button>
+            <button class="btn btn-purple btn-lg" onclick="showCognitiveGames()" id="btn-home-cognitive">
+              🧠 Cognitive Games
+            </button>
+            <button class="btn btn-emerald btn-lg" onclick="showAptitudeGames()" id="btn-home-aptitude">
+              📚 Aptitude Games
+            </button>
+            <button class="btn btn-secondary btn-lg" onclick="showProgress()" id="btn-home-progress">
+              📊 Progress Dashboard
+            </button>
+          </div>
+        </div>
+
+        <!-- Category Showcase Cards -->
+        <div class="category-preview-grid">
+          <!-- Cognitive Category Preview -->
+          <div class="glass-card category-preview-card card-cognitive" onclick="showCognitiveGames()">
+            <div>
+              <span class="card-badge badge-purple">SECTION A</span>
+              <h2 class="card-title text-purple">🧠 Cognitive Games</h2>
+              <p class="card-desc">
+                Sharpen attention, inhibition control, spatial memory, visual pattern matching, and inductive logic through 5 intense brain games.
+              </p>
+              <div class="game-pills-list">
+                <span class="mini-pill">⚡ Color Rush</span>
+                <span class="mini-pill">🧩 Pattern Match</span>
+                <span class="mini-pill">💡 Logic Escape</span>
+                <span class="mini-pill">🗺️ Mental Grid Map</span>
+                <span class="mini-pill">🔲 Matrix Pattern Copy</span>
+              </div>
+            </div>
+            <button class="btn btn-purple" onclick="event.stopPropagation(); showCognitiveGames()">
+              Explore 5 Cognitive Games →
+            </button>
+          </div>
+
+          <!-- Aptitude Category Preview -->
+          <div class="glass-card category-preview-card card-aptitude" onclick="showAptitudeGames()">
+            <div>
+              <span class="card-badge badge-cyan">SECTION B</span>
+              <h2 class="card-title text-cyan">📚 Aptitude Arena</h2>
+              <p class="card-desc">
+                Master competitive examinations and quantitative reasoning across dynamic numerical questions, analytical logic, and verbal fluency.
+              </p>
+              <div class="game-pills-list">
+                <span class="mini-pill">📐 Quantitative Aptitude</span>
+                <span class="mini-pill">🔍 Logical Reasoning</span>
+                <span class="mini-pill">📖 Verbal Ability</span>
+              </div>
+            </div>
+            <button class="btn btn-primary" onclick="event.stopPropagation(); showAptitudeGames()">
+              Enter Aptitude Arena →
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           2. VIEW: COGNITIVE GAMES SELECTION
+           ========================================== -->
+      <section id="view-cognitive" class="view-container">
+        <div class="section-header">
+          <h2 class="section-title text-gradient">COGNITIVE TRAINING</h2>
+          <p class="section-desc">
+            Select a cognitive discipline. Each game features 20+ progressive levels with exactly 10 timed challenges per level.
+          </p>
+        </div>
+        <div class="games-grid" id="cognitive-games-grid">
+          <!-- Injected dynamically by script.js -->
+        </div>
+      </section>
+
+      <!-- ==========================================
+           3. VIEW: APTITUDE GAMES SELECTION
+           ========================================== -->
+      <section id="view-aptitude" class="view-container">
+        <div class="section-header">
+          <h2 class="section-title text-gradient">APTITUDE ARENA</h2>
+          <p class="section-desc">
+            Dynamic, non-repeating problem sets testing quantitative speed, logical deduction, and verbal comprehension.
+          </p>
+        </div>
+        <div class="games-grid" id="aptitude-games-grid">
+          <!-- Injected dynamically by script.js -->
+        </div>
+      </section>
+
+      <!-- ==========================================
+           4. VIEW: LEVEL MAP & PROGRESSION
+           ========================================== -->
+      <section id="view-level-map" class="view-container">
+        <div class="level-map-container">
+          <div class="glass-card map-header-card">
+            <div class="map-header-info">
+              <span class="map-category-tag" id="map-category-tag">CATEGORY</span>
+              <h2 class="map-game-title" id="map-game-title">Game Title</h2>
+            </div>
+            <div style="display: flex; align-items: center; gap: 0.75rem;">
+              <div class="stat-chip" id="map-stars-badge">
+                ⭐ 0 Stars
+              </div>
+              <button class="btn btn-secondary btn-sm" id="map-back-btn">
+                ← Back
+              </button>
+            </div>
+          </div>
+
+          <!-- Sinuous Game Path Nodes -->
+          <div class="level-path-wrapper" id="level-path-nodes">
+            <!-- Injected dynamically by script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           5. VIEW: ACTIVE GAMEPLAY ARENA
+           ========================================== -->
+      <section id="view-game" class="view-container">
+        <div class="game-arena-wrapper">
+          <!-- Top HUD -->
+          <div class="game-hud">
+            <div class="hud-game-info">
+              <span class="hud-game-name" id="hud-game-name">GAME NAME</span>
+              <span class="hud-game-level" id="hud-game-level">Level 1 • Easy</span>
+            </div>
+
+            <!-- Question X/10 Progress Bar -->
+            <div class="hud-progress-wrap">
+              <div class="hud-progress-labels">
+                <span id="hud-question-index">Question 1/10</span>
+                <span>10 Challenges Rule</span>
+              </div>
+              <div class="hud-progress-track">
+                <div class="hud-progress-bar" id="hud-progress-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <!-- 60-Second Countdown Timer -->
+            <div class="hud-timer-box" id="hud-timer-box">
+              <span>⏱️</span>
+              <span id="hud-timer-text">60</span>s
+            </div>
+
+            <!-- Live Score & Streak -->
+            <div class="hud-score-box">
+              <span class="hud-score-label">Score</span>
+              <span class="hud-score-value" id="hud-live-score">0</span>
+              <div class="streak-indicator" id="hud-streak-box" style="display: none;">
+                🔥 2x Streak!
+              </div>
+            </div>
+          </div>
+
+          <!-- Challenge Body Container -->
+          <div class="glass-card challenge-card" id="challenge-content-area">
+            <!-- Injected dynamically by script.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ==========================================
+           6. VIEW: PROGRESS DASHBOARD
+           ========================================== -->
+      <section id="view-progress" class="view-container">
+        <div class="section-header">
+          <h2 class="section-title text-gradient">PROGRESS & MASTERY</h2>
+          <p class="section-desc">
+            Track your cognitive skill progression, accuracy metrics, completed levels, and achievement badges.
+          </p>
+        </div>
+
+        <div class="progress-dashboard">
+          <!-- Key Metrics Grid -->
+          <div class="progress-overview-grid">
+            <div class="home-stat-card">
+              <div class="stat-card-icon">🏆</div>
+              <div class="stat-card-value text-cyan" id="prog-total-score">0</div>
+              <div class="stat-card-label">Total Score</div>
+            </div>
+            <div class="home-stat-card">
+              <div class="stat-card-icon">⭐</div>
+              <div class="stat-card-value text-gold" id="prog-total-stars">0</div>
+              <div class="stat-card-label">Stars Earned</div>
+            </div>
+            <div class="home-stat-card">
+              <div class="stat-card-icon">🧠</div>
+              <div class="stat-card-value text-purple" id="prog-cog-levels">0 / 100</div>
+              <div class="stat-card-label">Cognitive Cleared</div>
+            </div>
+            <div class="home-stat-card">
+              <div class="stat-card-icon">📚</div>
+              <div class="stat-card-value text-emerald" id="prog-apt-levels">0 / 60</div>
+              <div class="stat-card-label">Aptitude Cleared</div>
+            </div>
+            <div class="home-stat-card">
+              <div class="stat-card-icon">🎯</div>
+              <div class="stat-card-value text-amber" id="prog-overall-accuracy">0%</div>
+              <div class="stat-card-label">Overall Accuracy</div>
+            </div>
+          </div>
+
+          <!-- Cognitive Skill Mastery Visual Bars -->
+          <div class="glass-card progress-skill-card">
+            <h3 class="card-title text-cyan" style="margin-bottom: 1.5rem;">Cognitive Skill Breakdown</h3>
+
+            <div class="skill-row">
+              <div class="skill-row-top">
+                <span>🧠 Working & Spatial Memory</span>
+                <span class="text-purple" id="skill-memory-val">0%</span>
+              </div>
+              <div class="skill-track">
+                <div class="skill-fill fill-purple" id="skill-memory-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-row">
+              <div class="skill-row-top">
+                <span>⚡ Attention & Inhibition Control</span>
+                <span class="text-cyan" id="skill-attention-val">0%</span>
+              </div>
+              <div class="skill-track">
+                <div class="skill-fill fill-cyan" id="skill-attention-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-row">
+              <div class="skill-row-top">
+                <span>🧩 Pattern Recognition & Deduction</span>
+                <span class="text-blue" id="skill-patterns-val">0%</span>
+              </div>
+              <div class="skill-track">
+                <div class="skill-fill fill-blue" id="skill-patterns-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-row">
+              <div class="skill-row-top">
+                <span>💡 Logical & Analytical Thinking</span>
+                <span class="text-emerald" id="skill-logic-val">0%</span>
+              </div>
+              <div class="skill-track">
+                <div class="skill-fill fill-emerald" id="skill-logic-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-row">
+              <div class="skill-row-top">
+                <span>📐 Quantitative & Numerical Aptitude</span>
+                <span class="text-amber" id="skill-quant-val">0%</span>
+              </div>
+              <div class="skill-track">
+                <div class="skill-fill fill-amber" id="skill-quant-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+
+            <div class="skill-row">
+              <div class="skill-row-top">
+                <span>📖 Verbal Fluency & Vocabulary</span>
+                <span class="text-rose" id="skill-verbal-val">0%</span>
+              </div>
+              <div class="skill-track">
+                <div class="skill-fill fill-purple" id="skill-verbal-fill" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Badges & Achievements -->
+          <div class="glass-card">
+            <h3 class="card-title text-gold" style="margin-bottom: 1.25rem;">🏅 Unlocked Badges & Milestones</h3>
+            <div class="badges-grid" id="badges-grid-container">
+              <!-- Injected dynamically by script.js -->
+            </div>
+          </div>
+
+          <!-- Danger Zone: Reset Data -->
+          <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
+            <button class="btn btn-secondary btn-sm" onclick="resetAllData()" style="color: var(--color-rose); border-color: rgba(244, 63, 94, 0.3);">
+              🗑️ Reset All Progress
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="app-footer">
+      <p>BRAINBOOST &copy; 2026 &bull; Gamified Cognitive & Aptitude Training Platform &bull; All Progress Saved Locally</p>
+    </footer>
+  </div>
+
+  <!-- Vanilla JavaScript Application Logic -->
+  <script src="./script.js"></script>
+</body>
+</html>
