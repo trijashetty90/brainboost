@@ -15,7 +15,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;700;800;900&family=Plus+Jakarta+Sans:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,700&display=swap" rel="stylesheet">
   
   <!-- Stylesheet -->
-  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="/static/style.css" />
 </head>
 <body>
   <!-- Ambient Cosmic Grid Overlay -->
@@ -72,9 +72,7 @@
 
     <!-- MAIN VIEWS WRAPPER -->
     <main>
-      <!-- ==========================================
-           1. VIEW: HOME PAGE
-           ========================================== -->
+      <!-- 1. VIEW: HOME PAGE -->
       <section id="view-home" class="view-container active">
         <div class="hero-section">
           <div class="hero-pill">
@@ -174,7 +172,6 @@
 
         <!-- Category Showcase Cards -->
         <div class="category-preview-grid">
-          <!-- Cognitive Category Preview -->
           <div class="glass-card category-preview-card card-cognitive" onclick="showCognitiveGames()">
             <div>
               <span class="card-badge badge-purple">SECTION A</span>
@@ -195,7 +192,6 @@
             </button>
           </div>
 
-          <!-- Aptitude Category Preview -->
           <div class="glass-card category-preview-card card-aptitude" onclick="showAptitudeGames()">
             <div>
               <span class="card-badge badge-cyan">SECTION B</span>
@@ -216,9 +212,7 @@
         </div>
       </section>
 
-      <!-- ==========================================
-           2. VIEW: COGNITIVE GAMES SELECTION
-           ========================================== -->
+      <!-- 2. VIEW: COGNITIVE GAMES SELECTION -->
       <section id="view-cognitive" class="view-container">
         <div class="section-header">
           <h2 class="section-title text-gradient">COGNITIVE TRAINING</h2>
@@ -226,14 +220,10 @@
             Select a cognitive discipline. Each game features 20+ progressive levels with exactly 10 timed challenges per level.
           </p>
         </div>
-        <div class="games-grid" id="cognitive-games-grid">
-          <!-- Injected dynamically by script.js -->
-        </div>
+        <div class="games-grid" id="cognitive-games-grid"></div>
       </section>
 
-      <!-- ==========================================
-           3. VIEW: APTITUDE GAMES SELECTION
-           ========================================== -->
+      <!-- 3. VIEW: APTITUDE GAMES SELECTION -->
       <section id="view-aptitude" class="view-container">
         <div class="section-header">
           <h2 class="section-title text-gradient">APTITUDE ARENA</h2>
@@ -241,14 +231,10 @@
             Dynamic, non-repeating problem sets testing quantitative speed, logical deduction, and verbal comprehension.
           </p>
         </div>
-        <div class="games-grid" id="aptitude-games-grid">
-          <!-- Injected dynamically by script.js -->
-        </div>
+        <div class="games-grid" id="aptitude-games-grid"></div>
       </section>
 
-      <!-- ==========================================
-           4. VIEW: AI & ML ANALYSIS DASHBOARD
-           ========================================== -->
+      <!-- 4. VIEW: AI & ML ANALYSIS DASHBOARD -->
       <section id="view-ai-ml" class="view-container">
         <div class="section-header">
           <h2 class="section-title text-gradient">🤖 AI & MACHINE LEARNING ANALYSIS</h2>
@@ -258,7 +244,6 @@
         </div>
 
         <div class="aiml-grid">
-          <!-- ML Prediction Hero Card -->
           <div class="glass-card ml-prediction-card">
             <div class="ml-card-header">
               <span class="card-badge badge-purple">ML CLASSIFIER INFERENCE</span>
@@ -271,7 +256,6 @@
               <div class="ml-confidence-text" id="ml-confidence-text">Model Confidence: 88.5%</div>
             </div>
 
-            <!-- Probability Distribution Bars -->
             <div class="ml-probs-box">
               <div class="prob-row">
                 <div class="prob-labels"><span>Beginner</span><span id="prob-val-beg">10%</span></div>
@@ -292,7 +276,6 @@
             </button>
           </div>
 
-          <!-- Personalized Recommendation Card -->
           <div class="glass-card recommendation-card" id="recommendation-card">
             <span class="card-badge badge-cyan">🎯 PERSONALIZED RECOMMENDATION</span>
             <h3 class="card-title text-cyan" id="rec-game-title" style="margin-top: 0.5rem;">Recommended Practice</h3>
@@ -305,17 +288,13 @@
               </button>
             </div>
 
-            <!-- Daily 5-Round Plan Summary -->
             <div class="daily-plan-box">
               <h4 class="text-gold" style="font-size: 0.95rem; margin-bottom: 0.75rem;">🎯 Today's 5-Round BrainBoost Plan</h4>
-              <div class="daily-rounds-list" id="daily-rounds-list">
-                <!-- Injected dynamically -->
-              </div>
+              <div class="daily-rounds-list" id="daily-rounds-list"></div>
             </div>
           </div>
         </div>
 
-        <!-- 30-Day Assessment Comparison -->
         <div class="glass-card assessment-card" style="margin-top: 1.5rem;">
           <div class="assessment-header">
             <div>
@@ -338,17 +317,13 @@
                   <th>Growth Status</th>
                 </tr>
               </thead>
-              <tbody id="assessment-tbody">
-                <!-- Injected dynamically -->
-              </tbody>
+              <tbody id="assessment-tbody"></tbody>
             </table>
           </div>
         </div>
       </section>
 
-      <!-- ==========================================
-           5. VIEW: LEVEL MAP & PROGRESSION
-           ========================================== -->
+      <!-- 5. VIEW: LEVEL MAP & PROGRESSION -->
       <section id="view-level-map" class="view-container">
         <div class="level-map-container">
           <div class="glass-card map-header-card">
@@ -366,26 +341,19 @@
             </div>
           </div>
 
-          <!-- Sinuous Game Path Nodes -->
-          <div class="level-path-wrapper" id="level-path-nodes">
-            <!-- Injected dynamically by script.js -->
-          </div>
+          <div class="level-path-wrapper" id="level-path-nodes"></div>
         </div>
       </section>
 
-      <!-- ==========================================
-           6. VIEW: ACTIVE GAMEPLAY ARENA
-           ========================================== -->
+      <!-- 6. VIEW: ACTIVE GAMEPLAY ARENA -->
       <section id="view-game" class="view-container">
         <div class="game-arena-wrapper">
-          <!-- Top HUD -->
           <div class="game-hud">
             <div class="hud-game-info">
               <span class="hud-game-name" id="hud-game-name">GAME NAME</span>
               <span class="hud-game-level" id="hud-game-level">Level 1 • Easy</span>
             </div>
 
-            <!-- Question X/10 Progress Bar -->
             <div class="hud-progress-wrap">
               <div class="hud-progress-labels">
                 <span id="hud-question-index">Question 1/10</span>
@@ -396,13 +364,11 @@
               </div>
             </div>
 
-            <!-- 60-Second Countdown Timer -->
             <div class="hud-timer-box" id="hud-timer-box">
               <span>⏱️</span>
               <span id="hud-timer-text">60</span>s
             </div>
 
-            <!-- Live Score & Streak -->
             <div class="hud-score-box">
               <span class="hud-score-label">Score</span>
               <span class="hud-score-value" id="hud-live-score">0</span>
@@ -412,16 +378,11 @@
             </div>
           </div>
 
-          <!-- Challenge Body Container -->
-          <div class="glass-card challenge-card" id="challenge-content-area">
-            <!-- Injected dynamically by script.js -->
-          </div>
+          <div class="glass-card challenge-card" id="challenge-content-area"></div>
         </div>
       </section>
 
-      <!-- ==========================================
-           7. VIEW: PROGRESS DASHBOARD
-           ========================================== -->
+      <!-- 7. VIEW: PROGRESS DASHBOARD -->
       <section id="view-progress" class="view-container">
         <div class="section-header">
           <h2 class="section-title text-gradient">PROGRESS & MASTERY</h2>
@@ -431,7 +392,6 @@
         </div>
 
         <div class="progress-dashboard">
-          <!-- Key Metrics Grid -->
           <div class="progress-overview-grid">
             <div class="home-stat-card">
               <div class="stat-card-icon">🏆</div>
@@ -460,7 +420,6 @@
             </div>
           </div>
 
-          <!-- Cognitive Skill Mastery Visual Bars -->
           <div class="glass-card progress-skill-card">
             <h3 class="card-title text-cyan" style="margin-bottom: 1.5rem;">Cognitive & Aptitude Skill Breakdown</h3>
 
@@ -535,15 +494,11 @@
             </div>
           </div>
 
-          <!-- Badges & Achievements -->
           <div class="glass-card">
             <h3 class="card-title text-gold" style="margin-bottom: 1.25rem;">🏅 Unlocked Badges & Milestones</h3>
-            <div class="badges-grid" id="badges-grid-container">
-              <!-- Injected dynamically by script.js -->
-            </div>
+            <div class="badges-grid" id="badges-grid-container"></div>
           </div>
 
-          <!-- Danger Zone: Reset Data -->
           <div style="display: flex; justify-content: flex-end; margin-top: 1rem;">
             <button class="btn btn-secondary btn-sm" onclick="resetAllData()" style="color: var(--color-rose); border-color: rgba(244, 63, 94, 0.3);">
               🗑️ Reset All Progress
@@ -553,13 +508,11 @@
       </section>
     </main>
 
-    <!-- Footer -->
     <footer class="app-footer">
       <p>BRAINBOOST &copy; 2026 &bull; ML-Based Cognitive & Aptitude Assessment Web Application &bull; MCA Academic Project</p>
     </footer>
   </div>
 
-  <!-- Vanilla JavaScript Application Logic -->
-  <script src="./script.js"></script>
+  <script src="/static/script.js"></script>
 </body>
 </html>

@@ -645,9 +645,7 @@ body {
   color: var(--text-muted);
 }
 
-/* ==========================================================================
-   LEVEL MAP & PROGRESSION PATH
-   ========================================================================== */
+/* Level Map */
 .level-map-container {
   max-width: 780px;
   margin: 0 auto;
@@ -760,7 +758,6 @@ body {
   50% { box-shadow: 0 0 36px rgba(251, 191, 36, 0.9); }
 }
 
-/* Sinuous Connecting Line */
 .path-connector {
   width: 4px;
   height: 30px;
@@ -769,9 +766,7 @@ body {
   border-radius: 999px;
 }
 
-/* ==========================================================================
-   GAMEPLAY ARENA HUD & CARDS
-   ========================================================================== */
+/* Gameplay Arena HUD */
 .game-arena-wrapper {
   max-width: 820px;
   margin: 0 auto;
@@ -836,7 +831,6 @@ body {
   transition: width 0.3s ease;
 }
 
-/* 60s Countdown Timer HUD Box */
 .hud-timer-box {
   display: flex;
   align-items: center;
@@ -892,7 +886,6 @@ body {
   to { filter: drop-shadow(0 0 8px rgba(245, 158, 11, 1)); }
 }
 
-/* Challenge Body Card */
 .challenge-card {
   min-height: 420px;
   display: flex;
@@ -909,7 +902,6 @@ body {
   line-height: 1.5;
 }
 
-/* 4-Options Answers Grid */
 .options-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -953,7 +945,6 @@ body {
   box-shadow: 0 0 24px rgba(244, 63, 94, 0.6) !important;
 }
 
-/* Solution / Explanation Overlay Strip */
 .solution-box {
   margin-top: 1.5rem;
   padding: 1.25rem;
@@ -980,7 +971,6 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* Color Rush Stroop Card */
 .stroop-word-display {
   font-family: var(--font-gaming);
   font-size: clamp(3rem, 8vw, 4.75rem);
@@ -1001,7 +991,6 @@ body {
   letter-spacing: 0.05em;
 }
 
-/* Grid & Matrix Game Layouts */
 .memory-grid-canvas {
   display: grid;
   gap: 8px;
@@ -1039,7 +1028,6 @@ body {
   border-color: var(--color-cyan);
 }
 
-/* Victory / Defeat Modal Results */
 .result-screen-card {
   text-align: center;
   padding: 2.5rem 1.5rem;
@@ -1113,9 +1101,7 @@ body {
   margin-top: 1rem;
 }
 
-/* ==========================================================================
-   AI & ML ANALYSIS VIEW
-   ========================================================================== */
+/* AI & ML View */
 .aiml-grid {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
@@ -1235,7 +1221,6 @@ body {
   font-size: 0.85rem;
 }
 
-/* 30-Day Assessment Table */
 .assessment-header {
   display: flex;
   align-items: flex-start;
@@ -1283,9 +1268,6 @@ body {
   color: var(--color-emerald-light);
 }
 
-/* ==========================================================================
-   PROGRESS & MASTERY DASHBOARD
-   ========================================================================== */
 .progress-overview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
@@ -1330,7 +1312,6 @@ body {
 .fill-amber { background: linear-gradient(90deg, #d97706, #f59e0b); }
 .fill-rose { background: linear-gradient(90deg, #e11d48, #f43f5e); }
 
-/* Badges Grid */
 .badges-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -1370,7 +1351,6 @@ body {
   color: var(--text-muted);
 }
 
-/* Footer */
 .app-footer {
   text-align: center;
   padding: 2rem 0;
@@ -1380,7 +1360,6 @@ body {
   margin-top: auto;
 }
 
-/* Responsive Breakpoints */
 @media (max-width: 768px) {
   .nav-menu {
     overflow-x: auto;

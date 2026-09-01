@@ -95,7 +95,6 @@ const GAMES_DATA = [
   }
 ];
 
-// Initial default state
 let gameState = {
   totalScore: 0,
   totalStars: 0,
@@ -103,7 +102,7 @@ let gameState = {
   overallAccuracy: 0,
   skillLevel: "Beginner",
   soundEnabled: true,
-  levels: {}, // gameId -> { [levelNum]: { unlocked: bool, completed: bool, score: int, stars: int } }
+  levels: {},
   skills: {
     memory: 20,
     attention: 20,
@@ -115,7 +114,6 @@ let gameState = {
   }
 };
 
-// Active Gameplay Session Variables
 let activeGame = null;
 let activeLevel = 1;
 let currentQuestions = [];
@@ -133,7 +131,7 @@ let autoAdvanceTimer = null;
 let memoryFlashTimeout = null;
 
 // =============================================================================
-// WEB AUDIO SYNTHESIZER (NO EXTERNAL AUDIO FILES NEEDED)
+// WEB AUDIO SYNTHESIZER
 // =============================================================================
 
 let audioCtx = null;
@@ -249,7 +247,7 @@ const SoundFX = {
 };
 
 // =============================================================================
-// CONFETTI CELEBRATION ENGINE
+// CONFETTI CELEBRATION
 // =============================================================================
 
 function launchConfetti() {
@@ -284,7 +282,7 @@ function launchConfetti() {
     particles.forEach(p => {
       p.x += p.vx;
       p.y += p.vy;
-      p.vy += 0.45; // gravity
+      p.vy += 0.45;
       p.rotation += p.vRot;
       p.alpha -= 0.012;
 
@@ -312,7 +310,7 @@ function launchConfetti() {
 }
 
 // =============================================================================
-// STORAGE & SYNCHRONIZATION
+// STORAGE & SYNC
 // =============================================================================
 
 function initializeState() {
@@ -325,7 +323,6 @@ function initializeState() {
     }
   }
 
-  // Ensure all games have level 1 unlocked
   GAMES_DATA.forEach(game => {
     if (!gameState.levels[game.id]) {
       gameState.levels[game.id] = {};
@@ -379,16 +376,15 @@ async function fetchBackendProgress() {
       }
     }
   } catch (err) {
-    console.log("Backend offline or local-only mode. Using localStorage state.");
+    console.log("Using localStorage state cache.");
   }
 }
 
 // =============================================================================
-// VIEW NAVIGATION CONTROLLER
+// VIEW NAVIGATION
 // =============================================================================
 
 function showView(viewId) {
-  // Clear any running game timers
   clearInterval(timerInterval);
   clearTimeout(autoAdvanceTimer);
   clearTimeout(memoryFlashTimeout);
@@ -402,7 +398,6 @@ function showView(viewId) {
     target.classList.add("active");
   }
 
-  // Update nav buttons
   document.querySelectorAll(".nav-link").forEach(btn => {
     btn.classList.toggle("active", btn.getAttribute("data-view") === viewId);
   });
@@ -518,13 +513,11 @@ function renderLevelPath(gameId) {
 
   const lvlMap = gameState.levels[gameId] || {};
 
-  // Render levels 20 down to 1 in sinuous Candy Crush style
   for (let lvl = 20; lvl >= 1; lvl--) {
     const lvlInfo = lvlMap[lvl] || { unlocked: lvl === 1, completed: false, stars: 0 };
     const row = document.createElement("div");
     row.className = "level-node-row";
 
-    // Wave sinusoidal horizontal offset
     const offset = Math.sin((lvl * Math.PI) / 3) * 60;
     row.style.transform = `translateX(${offset}px)`;
 
@@ -570,7 +563,7 @@ function goBackFromMap() {
 }
 
 // =============================================================================
-// GAMEPLAY ENGINE (10-CHALLENGES RULE, 60s TIMER, AUTO-ADVANCE)
+// GAMEPLAY ENGINE (10 CHALLENGES RULE, 60s TIMER, AUTO PROGRESSION)
 // =============================================================================
 
 async function launchLevel(gameId, level) {
@@ -589,7 +582,6 @@ async function launchLevel(gameId, level) {
 
   showView("view-game");
 
-  // Update HUD
   const nameEl = document.getElementById("hud-game-name");
   const lvlEl = document.getElementById("hud-game-level");
   const scoreEl = document.getElementById("hud-live-score");
@@ -606,7 +598,6 @@ async function launchLevel(gameId, level) {
   if (scoreEl) scoreEl.textContent = "0";
   if (streakEl) streakEl.style.display = "none";
 
-  // Fetch or generate EXACTLY 10 questions for this level
   currentQuestions = await fetchOrGenerateQuestions(game.id, level);
   loadQuestion(0);
 }
@@ -625,10 +616,9 @@ async function fetchOrGenerateQuestions(gameId, level) {
       }
     }
   } catch (err) {
-    console.log("Local algorithmic generator fallback active.");
+    console.log("Local generator active.");
   }
 
-  // Pure Client-Side Dynamic Generator Fallback
   return generateClientQuestions(gameId, level, 10);
 }
 
@@ -646,13 +636,11 @@ function loadQuestion(index) {
   isAnswerLocked = false;
   questionStartTime = Date.now();
 
-  // Update HUD Progress
   const qIndexEl = document.getElementById("hud-question-index");
   const progressFill = document.getElementById("hud-progress-fill");
   if (qIndexEl) qIndexEl.textContent = `Question ${index + 1}/10`;
   if (progressFill) progressFill.style.width = `${(index / 10) * 100}%`;
 
-  // Reset 60s Countdown Timer
   timeLeft = 60;
   updateTimerDisplay();
   startTimer();
@@ -661,7 +649,6 @@ function loadQuestion(index) {
   const container = document.getElementById("challenge-content-area");
   if (!container) return;
 
-  // Render specific challenge view based on game
   if (activeGame.id === "color_rush") {
     renderColorRush(container, q);
   } else if (activeGame.id === "mental_grid") {
@@ -710,7 +697,6 @@ function handleTimeout() {
 
   updateStreakUI();
 
-  // Highlight correct option & show solution
   document.querySelectorAll(".option-btn").forEach(btn => {
     btn.disabled = true;
     if (btn.getAttribute("data-value") === q.correct_answer) {
@@ -718,23 +704,18 @@ function handleTimeout() {
     }
   });
 
-  showSolutionBox("⏱️ Time Expired! The correct answer was: " + q.correct_answer, q.explanation);
+  showSolutionBox("⏱️ Time Expired! Correct answer was: " + q.correct_answer, q.explanation);
 
-  // AUTOMATIC PROGRESSION: strictly no Next Question button
   autoAdvanceTimer = setTimeout(() => {
     loadQuestion(currentQuestionIndex + 1);
   }, 1800);
 }
 
-// -----------------------------------------------------------------------------
-// CHALLENGE RENDERERS
-// -----------------------------------------------------------------------------
-
 function renderStandard4Options(container, q) {
   container.innerHTML = `
     <div class="question-text-area">${q.question}</div>
     <div class="options-grid">
-      ${q.options.map((opt, i) => `
+      ${q.options.map(opt => `
         <button class="option-btn" data-value="${opt}" onclick="handleOptionClick('${opt.replace(/'/g, "\\'")}')">
           ${opt}
         </button>
@@ -777,7 +758,6 @@ function renderMentalGrid(container, q) {
     <div id="solution-container"></div>
   `;
 
-  // Flash targets for 2 seconds, then clear and invite player recall
   memoryFlashTimeout = setTimeout(() => {
     const inst = document.getElementById("grid-instruction");
     if (inst) inst.textContent = `🎯 Select the ${targets.length} coordinates you memorized!`;
@@ -801,17 +781,12 @@ function renderMentalGrid(container, q) {
           cell.textContent = "✓";
         }
 
-        // When player picked required target count
         if (selectedSet.size === targets.length) {
           isAnswerLocked = true;
           clearInterval(timerInterval);
 
           const isPerfect = targets.every(t => selectedSet.has(t));
-          if (isPerfect) {
-            handleAnswerResult(true, targets.join(", "), "Coordinates matched perfectly!");
-          } else {
-            handleAnswerResult(false, targets.join(", "), "Mismatch in memorized coordinates.");
-          }
+          handleAnswerResult(isPerfect, targets.join(", "), isPerfect ? "Coordinates matched perfectly!" : "Mismatch in coordinates.");
         }
       };
     });
@@ -864,10 +839,6 @@ function renderMatrixCopy(container, q) {
   }, 2000);
 }
 
-// -----------------------------------------------------------------------------
-// ANSWER EVALUATION & AUTOMATIC PROGRESSION
-// -----------------------------------------------------------------------------
-
 function handleOptionClick(selectedAnswer) {
   if (isAnswerLocked) return;
   isAnswerLocked = true;
@@ -876,7 +847,6 @@ function handleOptionClick(selectedAnswer) {
   const q = currentQuestions[currentQuestionIndex];
   const isCorrect = selectedAnswer === q.correct_answer;
 
-  // Highlight buttons
   document.querySelectorAll(".option-btn").forEach(btn => {
     btn.disabled = true;
     const val = btn.getAttribute("data-value");
@@ -910,12 +880,10 @@ function handleAnswerResult(isCorrect, correctAnswer, explanation) {
     showSolutionBox("❌ Incorrect! Correct Answer: " + correctAnswer, explanation);
   }
 
-  // Update HUD live score & streak
   const scoreEl = document.getElementById("hud-live-score");
   if (scoreEl) scoreEl.textContent = levelScore;
   updateStreakUI();
 
-  // AUTOMATIC PROGRESSION: wait 1.6s and load next question
   autoAdvanceTimer = setTimeout(() => {
     loadQuestion(currentQuestionIndex + 1);
   }, 1600);
@@ -943,15 +911,11 @@ function showSolutionBox(title, text) {
   `;
 }
 
-// -----------------------------------------------------------------------------
-// LEVEL COMPLETION (VICTORY / DEFEAT & AUTO-UNLOCK)
-// -----------------------------------------------------------------------------
-
 async function finishLevel() {
   clearInterval(timerInterval);
   clearTimeout(autoAdvanceTimer);
 
-  const passed = levelCorrectCount >= 5; // 5 or more correct out of 10 = PASS
+  const passed = levelCorrectCount >= 5;
   let stars = 0;
   if (levelCorrectCount >= 9) stars = 3;
   else if (levelCorrectCount >= 7) stars = 2;
@@ -962,7 +926,6 @@ async function finishLevel() {
     : 25;
   const accuracy = ((levelCorrectCount / 10) * 100).toFixed(0);
 
-  // Update Local State
   if (!gameState.levels[activeGame.id]) gameState.levels[activeGame.id] = {};
   const currentLvlState = gameState.levels[activeGame.id][activeLevel] || {};
 
@@ -983,12 +946,10 @@ async function finishLevel() {
     nextUnlocked = true;
   }
 
-  // Recalculate Aggregates
   recalculateAggregates();
   saveState();
   updateUI();
 
-  // Send to Backend API
   try {
     await fetch("/api/result", {
       method: "POST",
@@ -1006,10 +967,9 @@ async function finishLevel() {
       })
     });
   } catch (err) {
-    console.log("Recorded to local session state.");
+    console.log("Saved to local session state.");
   }
 
-  // Render Victory or Defeat Card
   const container = document.getElementById("challenge-content-area");
   if (!container) return;
 
@@ -1066,7 +1026,6 @@ async function finishLevel() {
       </div>
     `;
 
-    // Automatic transition to next level after 3.2 seconds if next level unlocked
     if (nextUnlocked) {
       autoAdvanceTimer = setTimeout(() => {
         launchLevel(activeGame.id, activeLevel + 1);
@@ -1130,7 +1089,6 @@ function recalculateAggregates() {
   gameState.completedLevels = completedCount;
   gameState.overallAccuracy = Math.min(100, Math.round(50 + completedCount * 2.5));
 
-  // Update skill radar values
   const skillKeys = Object.keys(gameState.skills);
   skillKeys.forEach(k => {
     gameState.skills[k] = Math.min(100, 20 + completedCount * 5);
@@ -1138,7 +1096,7 @@ function recalculateAggregates() {
 }
 
 // =============================================================================
-// AI & ML ANALYSIS INTEGRATION
+// AI & ML ANALYSIS
 // =============================================================================
 
 async function triggerMlPrediction(manual = false) {
@@ -1215,7 +1173,7 @@ async function fetchAssessmentData() {
       `).join("");
     }
   } catch (err) {
-    console.log("Using cached assessment records.");
+    console.log("Using cached records.");
   }
 }
 
@@ -1249,7 +1207,7 @@ function startRecommendedGame() {
 }
 
 // =============================================================================
-// PROGRESS DASHBOARD RENDERING
+// PROGRESS DASHBOARD
 // =============================================================================
 
 function renderProgressDashboard() {
@@ -1279,7 +1237,6 @@ function renderProgressDashboard() {
   if (progCog) progCog.textContent = `${cogCount} / 100`;
   if (progApt) progApt.textContent = `${aptCount} / 60`;
 
-  // Render Skill Bars
   Object.keys(gameState.skills).forEach(k => {
     const val = gameState.skills[k];
     const valEl = document.getElementById(`skill-${k}-val`);
@@ -1288,7 +1245,6 @@ function renderProgressDashboard() {
     if (fillEl) fillEl.style.width = `${val}%`;
   });
 
-  // Render Milestone Badges
   renderBadges();
 }
 
@@ -1335,10 +1291,6 @@ function resetAllData() {
   }
 }
 
-// =============================================================================
-// UI SYNC HELPER
-// =============================================================================
-
 function updateUI() {
   const headerScore = document.getElementById("header-total-score");
   const headerStars = document.getElementById("header-total-stars");
@@ -1358,7 +1310,7 @@ function updateUI() {
 }
 
 // =============================================================================
-// LOCAL ALGORITHMIC QUESTION GENERATOR (OFFLINE / FALLBACK)
+// LOCAL ALGORITHMIC GENERATOR
 // =============================================================================
 
 function generateClientQuestions(gameId, level, count) {
@@ -1463,12 +1415,11 @@ function generateClientQuestions(gameId, level, count) {
         explanation: "The only daughter of my father is myself (if female) or sister. The son of that person is the Son or Nephew."
       });
     } else {
-      // verbal
       const words = [
-        { word: "ABUNDANT", syn: "Plentiful", ant: "Scarce", dist: ["Sparse", "Tiny", "Weak"] },
-        { word: "CANDID", syn: "Frank", ant: "Deceptive", dist: ["Clever", "Shy", "Silent"] },
-        { word: "METICULOUS", syn: "Precise", ant: "Careless", dist: ["Fast", "Loud", "Simple"] },
-        { word: "RESILIENT", syn: "Tough", ant: "Fragile", dist: ["Heavy", "Soft", "Bright"] }
+        { word: "ABUNDANT", syn: "Plentiful", dist: ["Sparse", "Tiny", "Weak"] },
+        { word: "CANDID", syn: "Frank", dist: ["Clever", "Shy", "Silent"] },
+        { word: "METICULOUS", syn: "Precise", dist: ["Fast", "Loud", "Simple"] },
+        { word: "RESILIENT", syn: "Tough", dist: ["Heavy", "Soft", "Bright"] }
       ];
       const w = words[i % words.length];
       const opts = [w.syn, ...w.dist].sort(() => 0.5 - Math.random());
@@ -1483,10 +1434,6 @@ function generateClientQuestions(gameId, level, count) {
   }
   return list;
 }
-
-// =============================================================================
-// INITIALIZE ON DOM LOADED
-// =============================================================================
 
 document.addEventListener("DOMContentLoaded", () => {
   initializeState();
